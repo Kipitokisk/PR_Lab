@@ -15,7 +15,17 @@ public class WebScraper {
                 String name = product.select(".ads-list-photo-item-title").text();
                 String priceString = product.select(".ads-list-photo-item-price-wrapper").text();
                 String productUrl = "https://999.md" + product.select("a").attr("href");
-                System.out.println("Product: productName:" + name + " " + "prodcutPrice: " + priceString);
+
+                ProductValidator productValidator = new ProductValidator();
+                name = productValidator.cleanString(name);
+                Integer price = productValidator.validatePrice(priceString);
+
+                if (price == null) {
+                    continue;
+                }
+
+                System.out.println("productName:" + name);
+                System.out.println("prodcutPrice: " + price);
                 System.out.println(productUrl);
                 System.out.println();
             }

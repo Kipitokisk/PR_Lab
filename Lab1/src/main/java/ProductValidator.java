@@ -5,10 +5,9 @@ public class ProductValidator {
 
     public Integer validatePrice(String priceString) {
         try {
-            priceString = priceString.trim();
+            priceString = priceString.replaceAll("[^0-9]", "").trim();
             return Integer.parseInt(priceString);
         } catch (NumberFormatException e) {
-            System.out.println("Price is not a valid integer: " + priceString);
             return null;
         }
     }
