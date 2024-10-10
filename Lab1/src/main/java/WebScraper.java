@@ -27,6 +27,10 @@ public class WebScraper {
                 Document productPage = Jsoup.connect(productUrl).get();
                 String description = productPage.select(".adPage__content__description.grid_18").text();
 
+                Product productBody = new Product(name, price, description, productUrl);
+
+//                System.out.println(productBody);
+
                 System.out.println("productName:" + name);
                 System.out.println("productPrice: " + price);
                 System.out.println("productDescription: " + description);
