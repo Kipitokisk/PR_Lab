@@ -14,7 +14,7 @@ public class WebScraper {
             for (Element product : products) {
                 String name = product.select(".ads-list-photo-item-title").text();
                 String priceString = product.select(".ads-list-photo-item-price-wrapper").text();
-                String productUrl = "https://999.md" + product.select("a").attr("href");
+                String productUrl = "https://999.md" + product.select(".js-item-ad").attr("href");
 
                 ProductValidator productValidator = new ProductValidator();
                 name = productValidator.cleanString(name);
@@ -24,8 +24,12 @@ public class WebScraper {
                     continue;
                 }
 
+                Document productPage = Jsoup.connect(productUrl).get();
+                String description = productPage.select(".adPage__content__description.grid_18").text();
+
                 System.out.println("productName:" + name);
-                System.out.println("prodcutPrice: " + price);
+                System.out.println("productPrice: " + price);
+                System.out.println("productDescription: " + description);
                 System.out.println(productUrl);
                 System.out.println();
             }
