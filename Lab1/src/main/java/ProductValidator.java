@@ -11,4 +11,15 @@ public class ProductValidator {
             return null;
         }
     }
+
+    public double convertPrice(Integer price, String priceString) {
+        double exchangeRate = 19.0; // Example: 1 EUR = 19 MDL
+        if (priceString.contains("€")) {
+            // Convert EUR to MDL
+            return price * exchangeRate;
+        } else {
+            // Convert MDL to EUR
+            return price / exchangeRate;
+        }
+    }
 }
