@@ -1,6 +1,5 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -43,7 +42,12 @@ public class WebScraper {
 
             ProductSummary productSummary = new ProductSummary(filteredProducts, totalPrice, Instant.now().toString());
 
-            System.out.println(productSummary);
+            // Log JSON and XML representations
+            System.out.println("JSON Representation:");
+            System.out.println(productSummary.toJson());
+            System.out.println("XML Representation:");
+            System.out.println(productSummary.toXml());
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
