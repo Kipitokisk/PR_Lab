@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductSummary {
@@ -13,10 +14,11 @@ public class ProductSummary {
 
     @Override
     public String toString() {
+        DecimalFormat df = new DecimalFormat("#,###.00");
         return "ProductSummary{" +
-                "products=" + products +
-                ", totalPrice=" + totalPrice +
-                ", utcTimestamp='" + utcTimestamp + '\'' +
+                "\nproducts=" + products +
+                "\ntotalPrice=" + df.format(totalPrice) +
+                "\nutcTimestamp='" + utcTimestamp + '\'' +
                 '}';
     }
 }

@@ -1,10 +1,10 @@
 public class Product {
     private String name;
-    private Integer price;
+    private double price;
     private String description;
     private String link;
 
-    public Product(String name, Integer price, String description, String link) {
+    public Product(String name, double price, String description, String link) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -15,7 +15,7 @@ public class Product {
         return name;
     }
 
-    public Integer getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -29,11 +29,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                '}';
+        return "\nProduct{" +
+                "\nname='" + name + '\'' +
+                "\nprice=" + price +
+                "\ndescription='" + description + '\'' +
+                "\nlink='" + link + '\'' +
+                "\n}";
     }
 }
