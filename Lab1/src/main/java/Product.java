@@ -27,13 +27,34 @@ public class Product {
         return url;
     }
 
-    // Custom serialization to JSON
+    public String toPipeSeparated() {
+        return "Product|\n" +
+                "  name|" + name + "\n" +
+                "  price|" + price + "\n" +
+                "  description|" + description + "\n" +
+                "  url|" + url;
+    }
+
+    public static Product fromPipeSeparated(String serializedProduct) {
+        String[] lines = serializedProduct.split("\\n");
+        if (!lines[0].startsWith("Product")) {
+            throw new IllegalArgumentException("Invalid pipe-separated format for Product");
+        }
+
+        String name = lines[1].split("\\|")[1].trim();
+        double price = Double.parseDouble(lines[2].split("\\|")[1].trim());
+        String description = lines[3].split("\\|")[1].trim();
+        String url = lines[4].split("\\|")[1].trim();
+
+        return new Product(name, price, description, url);
+    }
+
+
     public String toJson() {
         return String.format("{\n  \"name\": \"%s\",\n  \"price\": %.2f,\n  \"description\": \"%s\",\n  \"url\": \"%s\"\n}",
                 name, price, description, url);
     }
 
-    // Custom serialization to XML
     public String toXml() {
         return String.format("<Product>\n  <Name>%s</Name>\n  <Price>%.2f</Price>\n  <Description>%s</Description>\n  <Url>%s</Url>\n</Product>",
                 name, price, description, url);

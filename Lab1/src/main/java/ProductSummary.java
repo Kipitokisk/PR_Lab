@@ -1,10 +1,12 @@
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSummary {
     private List<Product> products;
     private double totalPrice;
     private String utcTimestamp;
+    DecimalFormat df = new DecimalFormat("#,###.00");
 
     public ProductSummary(List<Product> products, double totalPrice, String utcTimestamp) {
         this.products = products;
@@ -24,7 +26,46 @@ public class ProductSummary {
         return utcTimestamp;
     }
 
-    // Custom serialization to JSON
+    public String toPipeSeparated() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ProductSummary|\n")
+                .append("  totalPrice|").append(df.format(totalPrice)).append("\n")
+                .append("  utcTimestamp|").append(utcTimestamp).append("\n")
+                .append("  products|[\n");
+
+        // Serialize each product on a new line with indentation
+        for (Product product : products) {
+            builder.append("    ").append(product.toPipeSeparated().replaceAll("\n", "\n    ")).append("\n");
+        }
+        builder.append("  ]");
+
+        return builder.toString();
+    }
+
+    public static ProductSummary fromPipeSeparated(String serializedSummary) {
+        String[] lines = serializedSummary.split("\\n");
+        if (!lines[0].startsWith("ProductSummary")) {
+            throw new IllegalArgumentException("Invalid pipe-separated format for ProductSummary");
+        }
+
+        double totalPrice = Double.parseDouble(lines[1].split("\\|")[1].trim());
+        String utcTimestamp = lines[2].split("\\|")[1].trim();
+        List<Product> products = new ArrayList<>();
+
+        // Collect all products from the lines
+        int productStartIndex = 4; // Products start after line 3
+        for (int i = productStartIndex; i < lines.length - 1; i += 5) {
+            StringBuilder productBuilder = new StringBuilder();
+            for (int j = 0; j < 5; j++) {  // Products span 5 lines
+                productBuilder.append(lines[i + j].replaceAll("    ", "")).append("\n");
+            }
+            products.add(Product.fromPipeSeparated(productBuilder.toString().trim()));
+        }
+
+        return new ProductSummary(products, totalPrice, utcTimestamp);
+    }
+
+
     public String toJson() {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{\n  \"products\": [\n");
@@ -34,14 +75,13 @@ public class ProductSummary {
                 jsonBuilder.append(",\n");
             }
         }
-        jsonBuilder.append("\n  ],\n  \"totalPrice\": ").append(totalPrice).append(",\n  \"timestamp\": \"").append(utcTimestamp).append("\"\n}");
+        jsonBuilder.append("\n  ],\n  \"totalPrice\": ").append(df.format(totalPrice)).append(",\n  \"timestamp\": \"").append(utcTimestamp).append("\"\n}");
         return jsonBuilder.toString();
     }
 
-    // Custom serialization to XML
     public String toXml() {
         StringBuilder xmlBuilder = new StringBuilder();
-        xmlBuilder.append("<ProductSummary>\n  <TotalPrice>").append(totalPrice).append("</TotalPrice>\n  <Timestamp>")
+        xmlBuilder.append("<ProductSummary>\n  <TotalPrice>").append(df.format(totalPrice)).append("</TotalPrice>\n  <Timestamp>")
                 .append(utcTimestamp).append("</Timestamp>\n  <Products>\n");
         for (Product product : products) {
             xmlBuilder.append(product.toXml()).append("\n");
@@ -52,7 +92,6 @@ public class ProductSummary {
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("#,###.00");
         return "ProductSummary{" +
                 "\nproducts=" + products +
                 "\ntotalPrice=" + df.format(totalPrice) +

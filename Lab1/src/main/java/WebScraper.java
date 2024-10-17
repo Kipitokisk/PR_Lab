@@ -100,8 +100,6 @@ public class WebScraper {
                 }
                 visitedUrls.add(location);  // Add the current location to visited URLs
 
-                System.out.println("Redirecting to: " + location);
-
                 // Follow the redirect
                 socket.close();
                 return getHttpResponse(location, visitedUrls, redirectCount + 1);  // Recurse with the new URL
@@ -162,6 +160,8 @@ public class WebScraper {
             System.out.println(productSummary.toJson());
             System.out.println("XML Representation:");
             System.out.println(productSummary.toXml());
+            System.out.println("Pipe Separated Representation:");
+            System.out.println(productSummary.toPipeSeparated());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
