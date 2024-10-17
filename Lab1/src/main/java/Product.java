@@ -28,7 +28,6 @@ public class Product {
     }
 
     // Custom serialization to JSON
-    // Custom serialization to JSON
     public String toJson() {
         return String.format("{\n  \"name\": \"%s\",\n  \"price\": %.2f,\n  \"description\": \"%s\",\n  \"url\": \"%s\"\n}",
                 name, price, description, url);
