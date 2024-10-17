@@ -135,7 +135,7 @@ public class WebScraper {
                         if (price == null) {
                             return null;
                         }
-                        double priceInMdl = productValidator.convertPrice(price, priceString);
+                        int priceInMdl = productValidator.convertPrice(price, priceString);
 
                         try {
                             // Fetch the product page via TCP
@@ -152,7 +152,7 @@ public class WebScraper {
                     .filter(product -> product != null && product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
                     .collect(Collectors.toList());
 
-            double totalPrice = filteredProducts.stream().map(Product::getPrice).reduce(0.0, Double::sum);
+            long totalPrice = filteredProducts.stream().map(Product::getPrice).reduce(0L, Long::sum);
 
             ProductSummary productSummary = new ProductSummary(filteredProducts, totalPrice, Instant.now().toString());
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 public class ProductSummary {
     private List<Product> products;
-    private double totalPrice;
+    private long totalPrice;
     private String utcTimestamp;
     DecimalFormat df = new DecimalFormat("#,###.00");
 
-    public ProductSummary(List<Product> products, double totalPrice, String utcTimestamp) {
+    public ProductSummary(List<Product> products, long totalPrice, String utcTimestamp) {
         this.products = products;
         this.totalPrice = totalPrice;
         this.utcTimestamp = utcTimestamp;
@@ -48,7 +48,7 @@ public class ProductSummary {
             throw new IllegalArgumentException("Invalid pipe-separated format for ProductSummary");
         }
 
-        double totalPrice = Double.parseDouble(lines[1].split("\\|")[1].trim());
+        long totalPrice = Long.parseLong(lines[1].split("\\|")[1].trim());
         String utcTimestamp = lines[2].split("\\|")[1].trim();
         List<Product> products = new ArrayList<>();
 
@@ -75,13 +75,13 @@ public class ProductSummary {
                 jsonBuilder.append(",\n");
             }
         }
-        jsonBuilder.append("\n  ],\n  \"totalPrice\": ").append(df.format(totalPrice)).append(",\n  \"timestamp\": \"").append(utcTimestamp).append("\"\n}");
+        jsonBuilder.append("\n  ],\n  \"totalPrice\": ").append(totalPrice).append(",\n  \"timestamp\": \"").append(utcTimestamp).append("\"\n}");
         return jsonBuilder.toString();
     }
 
     public String toXml() {
         StringBuilder xmlBuilder = new StringBuilder();
-        xmlBuilder.append("<ProductSummary>\n  <TotalPrice>").append(df.format(totalPrice)).append("</TotalPrice>\n  <Timestamp>")
+        xmlBuilder.append("<ProductSummary>\n  <TotalPrice>").append(totalPrice).append("</TotalPrice>\n  <Timestamp>")
                 .append(utcTimestamp).append("</Timestamp>\n  <Products>\n");
         for (Product product : products) {
             xmlBuilder.append(product.toXml()).append("\n");
@@ -94,7 +94,7 @@ public class ProductSummary {
     public String toString() {
         return "ProductSummary{" +
                 "\nproducts=" + products +
-                "\ntotalPrice=" + df.format(totalPrice) +
+                "\ntotalPrice=" + totalPrice +
                 "\nutcTimestamp='" + utcTimestamp + '\'' +
                 '}';
     }

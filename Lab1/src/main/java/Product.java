@@ -1,10 +1,10 @@
 public class Product {
     private String name;
-    private double price;
+    private long price;
     private String description;
     private String url;
 
-    public Product(String name, double price, String description, String url) {
+    public Product(String name, long price, String description, String url) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -15,7 +15,7 @@ public class Product {
         return name;
     }
 
-    public double getPrice() {
+    public long getPrice() {
         return price;
     }
 
@@ -42,7 +42,7 @@ public class Product {
         }
 
         String name = lines[1].split("\\|")[1].trim();
-        double price = Double.parseDouble(lines[2].split("\\|")[1].trim());
+        long price = Long.parseLong(lines[2].split("\\|")[1].trim());
         String description = lines[3].split("\\|")[1].trim();
         String url = lines[4].split("\\|")[1].trim();
 
@@ -51,12 +51,12 @@ public class Product {
 
 
     public String toJson() {
-        return String.format("{\n  \"name\": \"%s\",\n  \"price\": %.2f,\n  \"description\": \"%s\",\n  \"url\": \"%s\"\n}",
+        return String.format("{\n  \"name\": \"%s\",\n  \"price\": %d,\n  \"description\": \"%s\",\n  \"url\": \"%s\"\n}",
                 name, price, description, url);
     }
 
     public String toXml() {
-        return String.format("<Product>\n  <Name>%s</Name>\n  <Price>%.2f</Price>\n  <Description>%s</Description>\n  <Url>%s</Url>\n</Product>",
+        return String.format("<Product>\n  <Name>%s</Name>\n  <Price>%d</Price>\n  <Description>%s</Description>\n  <Url>%s</Url>\n</Product>",
                 name, price, description, url);
     }
 
