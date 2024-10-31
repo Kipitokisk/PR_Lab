@@ -10,9 +10,9 @@ public class Product {
     private Integer id;
     private String name;
     private long price;
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "VARCHAR(5000)")
     private String description;
+    @Column(columnDefinition = "VARCHAR(500)")
     private String url;
 
     public Product() {
