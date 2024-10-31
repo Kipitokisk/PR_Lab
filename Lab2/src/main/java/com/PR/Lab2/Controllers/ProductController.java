@@ -2,8 +2,13 @@ package com.PR.Lab2.Controllers;
 
 import com.PR.Lab2.Entities.Product;
 import com.PR.Lab2.Services.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -14,8 +19,9 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public Product saveProduct(@RequestBody Product product) {
-        return this.productService.saveProduct(product);
+    @ResponseStatus(HttpStatus.OK)
+    public void saveProduct(@RequestBody List<Product> products) {
+        this.productService.saveProduct(products);
     }
 
     @GetMapping("/{product-id}")
@@ -33,5 +39,13 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable("product-id") Integer id) {
         this.productService.deleteProductById(id);
+    }
+
+    @GetMapping
+    public Page<Product> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.getProductsByPage(pageable);
     }
 }

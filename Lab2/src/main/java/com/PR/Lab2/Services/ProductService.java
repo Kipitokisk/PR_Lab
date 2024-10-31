@@ -3,7 +3,11 @@ package com.PR.Lab2.Services;
 import com.PR.Lab2.Entities.Product;
 import com.PR.Lab2.Repositories.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -14,8 +18,8 @@ public class ProductService {
     }
 
     @Transactional
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public void saveProduct(List<Product> products) {
+        productRepository.saveAll(products);
     }
 
     @Transactional
@@ -34,4 +38,11 @@ public class ProductService {
     public void deleteProductById(Integer id) {
         productRepository.deleteById(id);
     }
+
+    @Transactional
+    public Page<Product> getProductsByPage(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+
 }
