@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,29 +28,30 @@ public class ProductController {
         this.productService.saveProduct(products);
     }
 
-    @GetMapping("/{product-id}")
+    @GetMapping("/get/{product-id}")
     public Product getProductById(@PathVariable("product-id") Integer id) {
         return this.productService.getProductById(id);
     }
 
-    @PutMapping("/{product-id}/{product-name}")
+    @PutMapping("/put/{product-id}/{product-name}")
     public Product changeProductName(@PathVariable("product-id") Integer id,
                                      @PathVariable("product-name") String name) {
         return this.productService.changeProductName(id, name);
     }
 
-    @DeleteMapping("/{product-id}")
+    @DeleteMapping("/delete/{product-id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable("product-id") Integer id) {
         this.productService.deleteProductById(id);
     }
 
-    @GetMapping
-    public Page<Product> getProducts(
+    @GetMapping("/page")
+    public ResponseEntity<Page<Product>> getProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return productService.getProductsByPage(pageable);
+       Page<Product> products = productService.getProductsByPage(pageable);
+       return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(products);
     }
 
     @PostMapping("/upload")
